@@ -1,0 +1,68 @@
+#* @vtlvariable name="module" type="com.jd.common.web.url.JdUrl" *#
+#* @vtlvariable name="page" type="com.jd.common.util.base.PaginatedArrayList" *#
+
+#macro (showPage $module $page)
+    #if($page)
+    #set($pagePos = 2) ##当前页的尾巴长度
+    总$!{page.totalItem}条记录。
+    #if($page.previousPageAvailable) ##如果能向上翻页
+    <a href="$module.addQueryData("page",$!{page.previousPage}).render()">上一页</a>
+    <a href="$module.addQueryData("page",1).render()">1</a>
+    #end
+    #if($!page.index>$pagePos+2) .. #end ##显示前面的省略号
+    #foreach($i in [$pagePos..1]) ##增加前面的尾巴
+        #if($!page.index - $i > 1)
+            #set($pageIndex= $!page.index - $i)
+        <a href="$module.addQueryData("page",$pageIndex).render()">$pageIndex</a>
+        #end
+    #end
+    <span>$!page.index</span> ##显示当前页号
+    #foreach($i in [1..$pagePos]) ##增加后面的尾巴
+        #if($!page.totalPage - $!page.index - $i > 0)
+            #set($pageIndex= $!page.index + $!i)
+        <a href="$module.addQueryData("page",$pageIndex).render()">$pageIndex</a>
+        #end
+    #end
+    #if($!page.totalPage - $!page.index > $pagePos+1) .. #end ##显示后面的省略号
+    #if($page.nextPageAvailable) ##显示后面的页
+    <a href="$module.addQueryData("page",$!{page.totalPage}).render()">$!{page.totalPage}</a>
+    <a href="$module.addQueryData("page",$!{page.nextPage}).render()">下一页</a>
+    #end
+    $!module.reset()
+    #end        
+#end
+
+
+#macro(showSimpleError)
+    #if(!$!actionErrors.empty)
+        #foreach($str in $actionErrors)
+            $!str
+            #break
+        #end
+    #end
+#end
+
+#macro(showError)
+    #if(!$!actionErrors.empty)
+        #foreach($str in $actionErrors)
+        <li>$!str</li>
+        #end
+    #end
+#end
+
+#macro(showSimpleMessage)
+    #if(!$!actionMessages.empty)
+        #foreach($str in $actionErrors)
+            $!str
+            #break
+        #end
+    #end
+#end
+
+#macro(showMessage)
+    #if(!$!actionMessages.empty)
+        #foreach($str in $actionErrors)
+        <li>$!str</li>
+        #end
+    #end
+#end

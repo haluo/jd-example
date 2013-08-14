@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="GBK"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd" default-autowire="byName">
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"/>
+
+    <bean id="cacheUtils" class="com.jd.common.cached.CacheUtils">
+        <property name="cacheServerAddress">
+            <list>
+                <value>${example.memcached1.address}</value>
+                <value>${example.memcached2.address}</value>
+            </list>
+        </property>
+    </bean>
+    <bean id="exampleManager" class="com.jd.helloworld.manager.example.impl.ExampleManagerImpl"/>
+    <bean id="exampleManagerCached" class="com.jd.helloworld.manager.example.impl.ExampleManagerCachedImpl"/>
+</beans>

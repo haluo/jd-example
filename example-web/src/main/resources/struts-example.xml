@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="GBK" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <package name="example" namespace="/example" extends="example-default">
+        <action name="*" method="{1}" class="com.jd.helloworld.web.action.example.ExampleAction">
+            <result>/WEB-INF/vm/example/{1}.vm</result>
+        </action>
+    </package>
+</struts>

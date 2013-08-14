@@ -1,0 +1,11 @@
+#* @vtlvariable name="example" type="com.jd.helloworld.domain.example.Example" *#
+#showSimpleError()
+<form action="doAdd.action" method="post">
+    名称：<input type="text" name="example.name" value="$!stringEscapeUtils.escapeHtml($!example.name)" size="40"> <br/>
+    类型：<select name="example.type">
+    <option value="1" #if($example.type == 1) selected="selected" #end>类型1</option>
+    <option value="2" #if($example.type == 2) selected="selected" #end>类型2</option>
+    <option value="3" #if($example.type == 3) selected="selected" #end>类型3</option>
+    </select>  <br/>
+    <input type="submit">
+</form>

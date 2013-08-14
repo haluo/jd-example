@@ -1,0 +1,37 @@
+#* @vtlvariable name="example" type="com.jd.helloworld.domain.example.Example" *#
+#* @vtlvariable name="message" type="java.lang.Integer" *#
+#* @vtlvariable name="sequence" type="java.lang.Integer" *#
+#* @vtlvariable name="examples" type="com.jd.common.util.PaginatedList<com.jd.helloworld.domain.example.Example>" *#
+#* @vtlvariable name="page" type="com.jd.common.util.PaginatedList" *#
+#set($title = "列表")
+
+hascode：$message
+#showSimpleMessage()
+
+
+<a href="$!exampleModule.getTarget("/example/add.action")">点击这儿新增</a>
+
+<form action="$!exampleModule.getTarget("/example/list.action")" method="get">
+
+    查询：<input type="text" name="example.name" size="30" value="$!stringEscapeUtils.escapeHtml($!example.name)"/>
+    <input type="submit"/>
+</form>
+<table border="1" style="outline:aqua" cellpadding="0" cellspacing="0" width="500">
+    <thead>
+    <th>名称</th>
+    <th>类型</th>
+    <th>创建日期</th>
+    </thead>
+    <tbody>
+#foreach($example in $examples)
+<tr>
+    <td>$!stringEscapeUtils.escapeHtml($!example.name)</td>
+    <td>$!example.type</td>
+    <td>$!dateFormatUtils.format($!example.created,"yyyy-MM-dd")</td>
+</tr>
+#end
+    </tbody>
+</table>
+
+#set($pageModule = $exampleModule.getTarget("/example/list.action").addQueryData("query",$!query).addQueryData("key",["a","b","c"]).addQueryData("pageSize",$!pageSize))
+#showPage($pageModule $examples)

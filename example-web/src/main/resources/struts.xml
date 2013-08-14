@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="GBK" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <constant name="struts.enable.DynamicMethodInvocation" value="false"/>
+    <constant name="struts.devMode" value="${example.struts.devMode}"/>
+    <constant name="struts.objectFactory" value="spring"/>
+    <constant name="struts.objectFactory.spring.autoWire " value="type"/>
+    <constant name="struts.i18n.encoding" value="GBK"/>
+    <constant name="struts.custom.i18n.resources" value="message/message"/>
+
+    <package name="example-default" extends="struts-default"  >
+        <result-types>
+            <result-type name="velocity" class="com.jd.common.struts.velocity.VelocityLayoutResult" default="true">
+                <param name="toolsBeanId">velocityTools</param>
+                <param name="urlBeanId">velocityUrl</param>
+            </result-type>
+        </result-types>
+        <global-results>
+            <result name="exception">/WEB-INF/vm/error.vm</result>
+            <result name="error">/WEB-INF/vm/error.vm</result>
+        </global-results>
+        <global-exception-mappings>
+            <exception-mapping exception="java.lang.Exception" result="exception"/>
+        </global-exception-mappings>
+    </package>
+    <include file="struts-example.xml"/>
+</struts>

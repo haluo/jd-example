@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="User">
+    <typeAlias alias="User" type="com.jd.helloworld.domain.example.User"/>
+
+    <resultMap id="UserResultMap" class="User">
+        <result property="id" column="id" nullValue="0"/>
+        <result property="userAccount" column="userAccount"/>
+        <result property="userType" column="userType" nullValue="0"/>
+        <result property="created" column="created"/>
+        <result property="modified" column="modified"/>
+    </resultMap>
+
+    <insert id="createUser" parameterClass="User">
+        insert into EXAMPLE_USER (id, userAccount, userType, created, modified)
+        values  (#id#, #userAccount#, #userType#, sysdate, sysdate)
+    </insert>
+
+    <select id="findUsers" resultMap="User.UserResultMap">
+        select id, userAccount, userType, created, modified from EXAMPLE_USER
+    </select>
+    <sql id="condition">
+        <dynamic prepend="where">
+            <isNotEmpty prepend="and" property="value" >
+                userAccount like #value#
+            </isNotEmpty>
+        </dynamic>
+    </sql>
+    <select id="getUsersCount" resultClass="int">
+        select count(*) as value from EXAMPLE_USER <include refid="User.condition"/>
+    </select>
+
+    <select id="findUsersPage1" parameterClass="com.jd.common.util.Query" resultMap="User.UserResultMap">
+        select /*+ordered use_nl(t1,t2)*/
+         t2.id, t2.userAccount, t2.userType, t2.created, t2.modified
+          from (select rid
+                  from (select r.rid, rownum linenum
+                          from (select rowid rid from EXAMPLE_USER t
+        <include refid="Example.condition"/>
+        order by t.id desc) r
+                         WHERE rownum &lt;= #endRow#)
+                 WHERE linenum &gt;= #startRow#) t1,
+               example t2
+         where t1.rid = t2.rowid
+    </select>
+
+    <select id="findOrdersPage" parameterClass="com.jd.common.util.Query" resultMap="User.UserResultMap">
+        select * from (select t.*, rownum linenum from (
+            select id, userAccount, userType, created, modified from EXAMPLE_USER t
+            <include refid="User.condition"/>
+            order by t.id desc
+        ) t WHERE rownum &lt;= #endRow#) t WHERE linenum &gt;= #startRow#
+    </select>
+</sqlMap>

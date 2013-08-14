@@ -1,0 +1,10 @@
+#* @vtlvariable name="example" type="com.jd.helloworld.domain.example.Example" *#
+#* @vtlvariable name="exampleId" type="java.lang.Integer" *#
+#* @vtlvariable name="result" type="com.jd.common.web.result.Result" *#
+
+#if($result.success)
+    您已经成功添加。id为：$!exampleId，name为：$!example.name <br/>
+    <a href="list.action">点击这儿点到列表</a>
+#else
+    #parse("/WEB-INF/vm/example/add.vm")
+#end

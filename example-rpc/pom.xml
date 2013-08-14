@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.jd.example</groupId>
+        <artifactId>jd-example</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>example-rpc</artifactId>
+    <packaging>jar</packaging>
+    <name>example rpc</name>
+    <dependencies>
+        <dependency>
+            <groupId>ice</groupId>
+            <artifactId>ice</artifactId>
+            <version>3.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jd.example</groupId>
+            <artifactId>example-domain</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <finalName>jd-example-rpc-${version}</finalName>
+    </build>        
+</project>

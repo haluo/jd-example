@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Order">
+    <typeAlias alias="Order" type="com.jd.helloworld.domain.example.Order"/>
+
+    <resultMap id="OrderResultMap" class="Order">
+        <result property="id" column="id" nullValue="0"/>
+        <result property="userId" column="userId" nullValue="0"/>
+        <result property="orderName" column="orderName" />
+        <result property="status" column="status" />
+        <result property="created" column="created"/>
+        <result property="modified" column="modified"/>
+    </resultMap>
+
+    <insert id="createOrder" parameterClass="Order">
+        insert into EXAMPLE_ORDER (id, userId, orderName, status, created, modified)
+        values  (#id#, #userId#, #orderName#, #status#, sysdate, sysdate)
+    </insert>
+
+    <select id="findOrders" resultMap="Order.OrderResultMap">
+        select id, userId, orderName, status, created, modified from EXAMPLE_ORDER
+    </select>
+    <sql id="condition">
+        <dynamic prepend="where">
+            <isNotEmpty prepend="and" property="value" >
+                orderName like #value#
+            </isNotEmpty>
+        </dynamic>
+    </sql>
+    <select id="getOrdersCount" resultClass="int">
+        select count(*) as value from EXAMPLE_ORDER <include refid="Order.condition"/>
+    </select>
+
+    <select id="findOrdersPage1" parameterClass="com.jd.common.util.Query" resultMap="Order.OrderResultMap">
+        select /*+ordered use_nl(t1,t2)*/
+         t2.id, t2.userId, t2.orderName, t2.status, t2.created, t2.modified
+          from (select rid
+                  from (select r.rid, rownum linenum
+                          from (select rowid rid from EXAMPLE_ORDER t
+        <include refid="Example.condition"/>
+        order by t.id desc) r
+                         WHERE rownum &lt;= #endRow#)
+                 WHERE linenum &gt;= #startRow#) t1,
+               example t2
+         where t1.rid = t2.rowid
+    </select>
+
+    <select id="findOrdersPage" parameterClass="com.jd.common.util.Query" resultMap="Order.OrderResultMap">
+        select * from (select t.*, rownum linenum from (
+            select id, userId, orderName, status, created, modified from EXAMPLE_ORDER t
+            <include refid="Order.condition"/>
+            order by t.id desc
+        ) t WHERE rownum &lt;= #endRow#) t WHERE linenum &gt;= #startRow#
+    </select>
+</sqlMap>

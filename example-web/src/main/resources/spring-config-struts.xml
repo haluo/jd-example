@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="GBK"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd" default-autowire="byName">
+
+    <bean name="velocityTools" class="java.util.HashMap">
+        <constructor-arg>
+            <map>
+                <entry key="stringUtils">
+                    <bean class="org.apache.commons.lang.StringUtils"/>
+                </entry>
+                <entry key="stringEscapeUtils">
+                    <bean class="org.apache.commons.lang.StringEscapeUtils"/>
+                </entry>
+                <entry key="dateFormatUtils">
+                    <bean class="com.jd.common.util.DateFormatUtils"/>
+                </entry>
+                <entry key="dateUtils">
+                    <bean class="org.apache.commons.lang.time.DateUtils"/>
+                </entry>
+                <entry key="localHost">
+                    <bean class="com.jd.common.network.LocalHost"/>
+                </entry>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="velocityUrl" class="java.util.HashMap">
+        <constructor-arg>
+            <map>
+                <!--pop admin本身的 -->
+                <entry key="homeModule"><bean class="com.jd.common.web.url.JdUrl">
+                    <property name="url" value="http://${example.domain.name}/"/>
+                </bean></entry>
+                <!--pop admin本身的 -->
+                <entry key="exampleModule"><bean class="com.jd.common.web.url.JdUrl">
+                    <property name="url" value="http://${example.domain.name}/"/>
+                </bean></entry>
+                <!--样式、js、图片地址-->
+                <entry key="assetModule"><bean class="com.jd.common.web.url.JdUrl">
+                    <property name="url" value="http://${example.asset.domain.name}/"/>
+                </bean></entry>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="cookieCipherTools" class="com.jd.common.web.cookie.CookieCipherTools">
+        <property name="charsetName" value="gbk"/>
+    </bean>
+
+    <bean id="layoutResult" class="com.jd.common.struts.velocity.VelocityLayoutResult" />
+    
+    <bean class="com.jd.common.web.cookie.JdCookie" abstract="true" id="jdEncryptCookie">
+        <property name="encrypt" value="true"/>
+        <property name="key" value="${example.cookie.key}"/>
+        <!--<property name="path" value="/"/>-->
+        <!--<property name="domain" value="${example.cookie.domain}"/>-->
+    </bean>
+
+    <bean id="jdCookie" class="java.util.ArrayList">
+        <constructor-arg>
+            <list>
+                <bean parent="jdEncryptCookie">
+                    <property name="name" value="a1"/>
+                    <property name="expiry" value="86400"/>
+                </bean>
+                <bean class="com.jd.common.web.cookie.JdCookie">
+                    <property name="name" value="a2"/>
+                    <property name="expiry" value="86400"/>
+                </bean>
+            </list>
+        </constructor-arg>
+    </bean>
+</beans>

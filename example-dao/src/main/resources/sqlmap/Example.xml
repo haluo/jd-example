@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="GBK"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+        "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Example">
+
+    <typeAlias alias="Example" type="com.jd.helloworld.domain.example.Example"/>
+
+    <resultMap id="ExampleResultMap" class="Example">
+        <result property="id" column="id" nullValue="0"/>
+        <result property="name" column="name"/>
+        <result property="type" column="type" nullValue="0"/>
+        <result property="created" column="created"/>
+        <result property="modified" column="modified"/>
+    </resultMap>
+
+    <insert id="createExample" parameterClass="Example">
+        insert into example  (id, name, type, created, modified)
+        values  (#id#, #name#, #type#, sysdate, sysdate)
+    </insert>
+
+    <select id="findExamples" resultMap="Example.ExampleResultMap">
+        select id, name, type, created, modified from example
+    </select>
+
+    <sql id="condition">
+        <dynamic prepend="where">
+            <isNotEmpty prepend="and" property="value" >
+                name like #value#
+            </isNotEmpty>
+        </dynamic>
+    </sql>
+    <select id="getExamplesCount" resultClass="int">
+        select count(*) as value from example <include refid="Example.condition"/>
+    </select>
+
+    <select id="findExamplesPage1" parameterClass="com.jd.common.util.Query" resultMap="Example.ExampleResultMap">
+        select /*+ordered use_nl(t1,t2)*/
+         t2.id, t2.name, t2.type, t2.created, t2.modified
+          from (select rid
+                  from (select r.rid, rownum linenum
+                          from (select rowid rid from example t
+        <include refid="Example.condition"/>
+        order by t.id desc) r
+                         WHERE rownum &lt;= #endRow#)
+                 WHERE linenum &gt;= #startRow#) t1,
+               example t2
+         where t1.rid = t2.rowid
+    </select>
+
+    <select id="findExamplesPage" parameterClass="com.jd.common.util.Query" resultMap="Example.ExampleResultMap">
+        select * from (select t.*, rownum linenum from (
+            select id, name, type, created, modified from example t
+            <include refid="Example.condition"/>
+            order by t.id desc
+        ) t WHERE rownum &lt;= #endRow#) t WHERE linenum &gt;= #startRow#
+    </select>
+
+
+</sqlMap>

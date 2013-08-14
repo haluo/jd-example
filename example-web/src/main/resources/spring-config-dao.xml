@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="GBK"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-autowire="byName">
+
+    <bean id="defaultSequence" class="com.jd.common.util.Sequence"/>
+
+    <bean id="sequenceUtil" class="com.jd.common.util.SequenceUtil">
+        <property name="defaultSequence" ref="defaultSequence"/>
+    </bean>
+
+
+    <bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+        <property name="configLocation" value="classpath:sqlmap-config.xml"/>
+    </bean>
+
+    <bean id="exampleDao" class="com.jd.helloworld.dao.example.impl.ExampleDaoImpl"/>
+
+
+</beans>

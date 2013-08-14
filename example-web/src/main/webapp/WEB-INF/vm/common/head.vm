@@ -1,0 +1,4 @@
+<head>
+    <title>#if($title)$title#else ÎŞ±êÌâ #end</title>
+    <script type="text/javascript" src="$assetModule.getTarget("/pop-man/js/jquery-1.4.2.min.js")"></script>
+</head>

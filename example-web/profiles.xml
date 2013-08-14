@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<profilesXml xmlns="http://maven.apache.org/PROFILES/1.0.0"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://maven.apache.org/PROFILES/1.0.0 http://maven.apache.org/xsd/profiles-1.0.0.xsd">
+    <profiles>
+           <profile>
+               <id>development</id>
+               <properties>
+
+                   <example.cookie.key>xLyhSVcQGix62o+t2fjZyx+bC+zQZCl2</example.cookie.key>
+                   <example.cookie.domain>.360buy.net</example.cookie.domain>
+
+                   <example.log.level>DEBUG</example.log.level>
+                   <example.log.path>d:/logs</example.log.path>
+
+
+                   <example.memcached1.address>10.10.224.102:11211</example.memcached1.address>
+                   <example.memcached2.address>10.10.224.102:11212</example.memcached2.address>
+
+                   <example.struts.devMode>true</example.struts.devMode>
+
+                   <example.domain.name>example.360buy.net</example.domain.name>
+                   <example.asset.domain.name>misc.360buyimg.net</example.asset.domain.name>
+
+                   <example.jdbc.datasource.type>dbcp</example.jdbc.datasource.type>
+                   <example.jdbc.driver>oracle.jdbc.driver.OracleDriver</example.jdbc.driver>
+                   <example.jdbc.url>jdbc:oracle:thin:@10.10.224.99:1521:popdb</example.jdbc.url>
+                   <example.jdbc.username>popuser</example.jdbc.username>
+                   <example.jdbc.password>popuser</example.jdbc.password>
+
+               </properties>
+           </profile>
+       </profiles>
+     
+</profilesXml>
